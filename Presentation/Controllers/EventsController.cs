@@ -35,5 +35,4 @@ public class EventsController(IEventService eventService) : ControllerBase
         return result.Success ? Ok(result) : StatusCode(500, result.Error);
     }
 
-
 }
