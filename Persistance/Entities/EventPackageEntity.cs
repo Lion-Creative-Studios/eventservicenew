@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Persistance.Entities;
 
+/* Updated by chatgpt 4o generated code to correctly map data */
 public class EventPackageEntity
 {
     [Key]
@@ -12,7 +13,7 @@ public class EventPackageEntity
     public string EventId { get; set; } = null!;
     public EventEntity Event { get; set; } = null!;
 
-    [ForeignKey(nameof(Package))]
-    public int PackageId { get; set; }
     public PackageEntity Package { get; set; } = null!;
 }
+
+/* Updated by chatgpt 4o generated code to correctly map data */

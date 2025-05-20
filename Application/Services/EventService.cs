@@ -17,30 +17,33 @@ public class EventService(IEventRepository eventRepository) : IEventService
 
     public async Task<EventResult> CreateEventAsync(CreateEventRequest request)
     {
-        try
+        var eventEntity = new EventEntity
         {
-            var eventEntity = new EventEntity
+            Image = request.Image,
+            Title = request.Title,
+            Description = request.Description,
+            Location = request.Location,
+            EventDate = request.EventDate,
+            Packages = request.Packages.Select(p => new EventPackageEntity
             {
-                Image = request.Image,
-                Title = request.Title,
-                Description = request.Description,
-                Location = request.Location,
-                EventDate = request.EventDate
-            };
+                Package = new PackageEntity
+                {
+                    Title = p.Title,
+                    SeatingArrangement = p.SeatingArrangement,
+                    Placement = p.Placement,
+                    Price = p.Price,
+                    Currency = p.Currency
+                }
+            }).ToList()
+        };
 
-            var result = await _eventRepository.AddAsync(eventEntity);
-            return result.Success
-                ? new EventResult { Success = true }
-                : new EventResult { Success = false, Error = result.Error };
-        }
-        catch (Exception ex) {
-            return new EventResult
-            {
-                Success = true,
-                Error = ex.Message
-            };
-        }
+        var result = await _eventRepository.AddAsync(eventEntity);
+
+        return result.Success
+            ? new EventResult { Success = true }
+            : new EventResult { Success = false, Error = result.Error };
     }
+
 
     public async Task<EventResult<IEnumerable<Event>>> GetEventsAsync()
     {
